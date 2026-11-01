@@ -1,0 +1,36 @@
+
+.cart-card {
+  border-radius: 18px !important;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.cart-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.cart-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #e8f0ff;
+  color: #0d6efd;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+}
+
+.cart-info {
+  font-size: 14px;
+}
+
+.cart-card .btn {
+  transition: all 0.3s ease;
+}
+
+.cart-card .btn:hover {
+  background-color: #084298;
+  transform: scale(1.02);
+}
