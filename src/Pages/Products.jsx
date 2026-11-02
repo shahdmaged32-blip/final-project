@@ -41,6 +41,7 @@ export default function Products ({ search }) {
           }
 
           setProducts(response.data.products)
+          
 
           if (response.data.total) {
             setTotalPages(Math.ceil(response.data.total / Limit_Size))

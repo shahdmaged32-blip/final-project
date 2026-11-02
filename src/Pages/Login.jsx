@@ -32,7 +32,7 @@ export default function Login () {
         username,
         password
       })
-
+console.log({username,password})
       
       const userData = response.data
 
@@ -45,8 +45,13 @@ export default function Login () {
       
       navigate('/dashboard')
     } catch (error) {
-      setError(error.response?.data?.message || 'Invalid username or password')
-    } finally {
+  console.log(error)
+  console.log(error.response)
+  console.log(error.response?.data)
+  setError(error.response?.data?.message || 'Invalid username or password')
+}
+      
+    finally {
       setLoading(false)
     }
   }

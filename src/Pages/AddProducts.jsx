@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../Api/api";
+import { Button, Card, Container, Form, Toast } from "react-bootstrap";
+import toast from "react-hot-toast";
 
 export default function AddProducts() {
   const [title, setTitle] = useState("");
@@ -17,41 +19,61 @@ export default function AddProducts() {
       });
 
       console.log(response.data);
+      Toast.success("Product Added Successfully");
+
+      setTitle("");
+      setPrice("");
+      setCategory("");
     } catch (error) {
       console.log(error);
+      toast.error("Failed to add product");
     }
   }
 
   return (
-    <div>
-      <h2>Add Product</h2>
+    <Container className="d-flex justify-content-center align-items-center mt-5">
+      <Card
+        className="shadow-lg border-0 rounded-4 p-4"
+        style={{ width: "500px" }}
+      >
+        <h2 className="text-center mb-4">Add Product</h2>
 
-      <form onSubmit={addProduct}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <Form onSubmit={addProduct}>
+          <Form.Group className="mb-3">
+            <Form.Label>Product Title</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter product title"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+            />
+          </Form.Group>
 
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
+          <Form.Group className="mb-3">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter price"
+              value={price}
+              onChange={(event) => setPrice(event.target.value)}
+            />
+          </Form.Group>
 
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
-        />
+          <Form.Group className="mb-4">
+            <Form.Label>Category</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter category"
+              value={category}
+              onChange={(event) => setCategory(event.target.value)}
+            />
+          </Form.Group>
 
-        <button type="submit">
-          Add Product
-        </button>
-      </form>
-    </div>
+          <Button variant="primary" type="submit" className="w-100">
+            Add Product
+          </Button>
+        </Form>
+      </Card>
+    </Container>
   );
 }
