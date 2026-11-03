@@ -24,36 +24,36 @@ export default function Login () {
       setError('Please enter username and password')
       return
     }
+try {
+  setLoading(true)
 
-    try {
-      setLoading(true)
+  const response = await api.post('/auth/login', {
+    username,
+    password
+  })
 
-      const response = await api.post('/auth/login', {
-        username,
-        password
-      })
-console.log({username,password})
-      
-      const userData = response.data
+  const userData = response.data
 
-      
-      localStorage.setItem('token', userData.accessToken)
+  console.log('Login response:', userData)
 
-      
-      localStorage.setItem('user', JSON.stringify(userData))
+  if (!userData.accessToken) {
+    setError('Token not found in response')
+    return
+  }
 
-      
-      navigate('/dashboard')
-    } catch (error) {
-  console.log(error)
-  console.log(error.response)
+  localStorage.setItem('token', userData.accessToken)
+  localStorage.setItem('user', JSON.stringify(userData))
+
+  navigate('/', { replace: true })
+
+} catch (error) {
   console.log(error.response?.data)
-  setError(error.response?.data?.message || 'Invalid username or password')
+  setError(
+    error.response?.data?.message || 'Invalid username or password'
+  )
+} finally {
+  setLoading(false)
 }
-      
-    finally {
-      setLoading(false)
-    }
   }
 
   return (

@@ -1,44 +1,92 @@
+
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   return (
-    <Card className="h-100 shadow-sm border-0">
+    <Card className="h-100 shadow-sm border-0 product-card">
 
-  <Card.Img
-    variant="top"
-    src={product.thumbnail}
-    style={{
-      height: "220px",
-      objectFit: "contain",
-      padding: "15px"
-    }}
-  />
+      <div className="position-relative bg-light">
+        <Card.Img
+          variant="top"
+          src={product.thumbnail}
+          style={{
+            height: "220px",
+            objectFit: "contain",
+            padding: "15px"
+          }}
+        />
 
-  <Card.Body>
+        <Badge
+          bg="success"
+          className="position-absolute top-0 end-0 m-3"
+        >
+          {product.availabilityStatus}
+        </Badge>
+      </div>
 
-    <Card.Title
-      style={{ minHeight: "70px" }}
-    >
-      {product.title}
-    </Card.Title>
+      <Card.Body className="d-flex flex-column">
 
-    <p>⭐ {product.rating}</p>
+        <div className="d-flex justify-content-between align-items-center mb-2">
+          <small className="text-muted">
+            {product.brand}
+          </small>
 
-    <h5 className="text-success">
-      ${product.price}
-    </h5>
+          <span className="text-warning fw-semibold">
+            ⭐ {product.rating}
+          </span>
+        </div>
 
-    <Button
-      as={Link}
-      to={`/products/${product.id}`}
-      className="w-100"
-    >
-      View Details
-    </Button>
+        <Card.Title className="fw-bold">
+          {product.title}
+        </Card.Title>
 
-  </Card.Body>
-</Card>
+        <Card.Text className="text-muted small">
+          {product.description}
+        </Card.Text>
+        
+
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h4 className="text-success fw-bold mb-0">
+            ${product.price}
+          </h4>
+
+          <Badge bg="danger">
+            {product.discountPercentage}% OFF
+          </Badge>
+        </div>
+
+        <hr />
+
+        <div className="small text-muted mb-3">
+
+          <p>
+            <i className="bi bi-arrow-return-left me-2"></i>
+            {product.returnPolicy}
+          </p>
+
+          <p>
+            <i className="bi bi-box-seam me-2"></i>
+            Minimum Order: {product.minimumOrderQuantity}
+          </p>
+          <p>
+            <i className="bi bi-box-seam me-2"></i>
+            stock: {product.stock}
+          </p>
+
+        </div>
+
+        <Button
+          as={Link}
+          to={`/products/${product.id}`}
+          className="w-100 mt-auto"
+        >
+          View Details
+          <i className="bi bi-arrow-right ms-2"></i>
+        </Button>
+
+      </Card.Body>
+    </Card>
   );
 }

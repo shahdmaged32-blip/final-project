@@ -41,6 +41,7 @@ export default function Products ({ search }) {
           }
 
           setProducts(response.data.products)
+          console.log(response.data.products)
           
 
           if (response.data.total) {
@@ -91,7 +92,7 @@ export default function Products ({ search }) {
             <Form.Select
               className='category-select'
               value={category}
-              onChange={e => setCategory(e.target.value)}
+              onChange={event => setCategory(event.target.value)}
             >
               <option value=''>All Products</option>
 
