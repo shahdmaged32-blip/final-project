@@ -53,6 +53,10 @@ export default function NavBar({ search, setSearch }) {
             <Nav.Link as={Link} to='/profile'>
               My Profile
             </Nav.Link>
+            <Nav.Link as={Link} to='/dashboard'>
+            Dashboard
+            </Nav.Link>
+
 
           </Nav>
 
