@@ -41,7 +41,7 @@ export default function Products ({ search }) {
           }
 
           setProducts(response.data.products)
-          console.log(response.data.products)
+          
           
 
           if (response.data.total) {

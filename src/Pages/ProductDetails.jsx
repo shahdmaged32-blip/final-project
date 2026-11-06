@@ -99,27 +99,7 @@ export default function ProductDetails () {
               Add To Cart
             </Button>
 
-            <Button
-              variant='warning'
-              as={Link}
-              to={`/update-products/${product.id}`}
-            >
-              Update
-            </Button>
-
-            <Button
-              variant='danger'
-              onClick={async () => {
-                try {
-                  await api.delete(`/products/${id}`)
-                  alert('Product Deleted')
-                } catch (error) {
-                  console.log(error)
-                }
-              }}
-            >
-              Delete
-            </Button>
+           
           </div>
           <Row className='mt-5'>
             <Col md={6} className='feature-item'>

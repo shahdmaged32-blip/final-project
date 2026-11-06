@@ -7,6 +7,9 @@ export default function NavBar({ search, setSearch }) {
   const navigate = useNavigate()
 
   const token = localStorage.getItem('token')
+  const user = JSON.parse(localStorage.getItem('user') || 'null')
+
+  const isAdmin = user?.role === 'admin'
 
   function handleLogout() {
     localStorage.removeItem('token')
@@ -46,17 +49,24 @@ export default function NavBar({ search, setSearch }) {
               Products
             </Nav.Link>
 
-            <Nav.Link as={Link} to='/cart'>
-              Cart
-            </Nav.Link>
+            {!isAdmin && (
+              <>
+                <Nav.Link as={Link} to='/cart'>
+                  Cart
+                </Nav.Link>
 
-            <Nav.Link as={Link} to='/profile'>
-              My Profile
-            </Nav.Link>
-            <Nav.Link as={Link} to='/dashboard'>
-            Dashboard
-            </Nav.Link>
+                <Nav.Link as={Link} to='/profile'>
+                  My Profile
+                </Nav.Link>
+              </>
+            )}
 
+            {isAdmin && (
+              <Nav.Link as={Link} to='/dashboard'>
+                <i className='bi bi-speedometer2 me-1'></i>
+                Dashboard
+              </Nav.Link>
+            )}
 
           </Nav>
 

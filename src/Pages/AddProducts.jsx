@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { api } from "../Api/api";
-import { Button, Card, Container, Form, Toast } from "react-bootstrap";
+import { Button, Card, Container, Form } from "react-bootstrap";
 import toast from "react-hot-toast";
 
 export default function AddProducts() {
@@ -19,7 +19,7 @@ export default function AddProducts() {
       });
 
       console.log(response.data);
-      Toast.success("Product Added Successfully");
+      toast.success("Product Added Successfully");
 
       setTitle("");
       setPrice("");

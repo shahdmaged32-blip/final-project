@@ -21,6 +21,7 @@ import Checkout from './Pages/Checkout'
 import Payment from './Pages/Payment'
 import Trackorder from './Pages/Trackorder'
 import ProtectedRoute from './Components/ProtectedRoute'
+import AdminProducts from './Pages/AdminProducts'
 
 
 export default function App() {
@@ -41,42 +42,29 @@ export default function App() {
 <Routes>
 
  
-
   <Route path='/login' Component={Login}/>
   <Route path='/register' Component={Register}/>
+  <Route path='/' Component={Home}/>
+  <Route path='/products' element={<Products search={search} setSearch={setSearch}/>}/>
+  <Route path='/products/:id' Component={ProductDetails}/>
 
  
-
   <Route element={<ProtectedRoute />}>
-
-    <Route path='/' Component={Home}/>
-  
-  
-     
-  
     <Route path='/profile' Component={Profile}/>
-
-    <Route
-      path='/products'
-      element={<Products search={search} setSearch={setSearch}/>}
-    />
-
-    <Route path='/products/:id' Component={ProductDetails}/>
-
     <Route path='/cart' Component={Cart}/>
     <Route path='/cart/:id' Component={CartDetails}/>
-
     <Route path='/checkout' Component={Checkout}/>
     <Route path='/payment' Component={Payment}/>
     <Route path='/track-order' Component={Trackorder}/>
+  </Route>
 
+  <Route element={<ProtectedRoute adminOnly={true} />}>
     <Route path='/dashboard' Component={Dashboard}/>
+    <Route path='/admin-products' Component={AdminProducts}/>
     <Route path='/users' Component={Users}/>
     <Route path='/users/:id' Component={UserDetails}/>
-
     <Route path='/add-products' Component={AddProducts}/>
     <Route path='/update-products/:id' Component={UpdateProducts}/>
-
   </Route>
 
   <Route path='*' Component={NotFound}/>

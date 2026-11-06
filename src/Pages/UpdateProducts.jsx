@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api } from '../Api/api'
 import '../styles/UpdateProducts.css'
-
+import toast from "react-hot-toast";
 export default function UpdateProducts () {
   const { id } = useParams()
 
@@ -38,8 +38,10 @@ export default function UpdateProducts () {
         price,
         category
       })
+     
 
       console.log(response.data)
+      toast.success("product updated Successfully");
     } catch (error) {
       console.log(error)
     }
@@ -49,7 +51,7 @@ export default function UpdateProducts () {
     <div className='update-container'>
       <div className='update-card'>
 
-        {/* Header */}
+        
         <div className='update-header'>
           <div className='update-icon'>
             <i className='bi bi-pencil-square'></i>
@@ -59,7 +61,7 @@ export default function UpdateProducts () {
           <p>Edit your product information easily</p>
         </div>
 
-        {/* Form */}
+       
         <form onSubmit={updateProduct}>
 
           <div className='update-input-group'>
