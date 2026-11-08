@@ -66,13 +66,7 @@ export default function ProductCard ({ product }) {
             View Details
           </Button>
 
-          <Button
-            variant='warning'
-            as={Link}
-            to={`/update-products/${product.id}`}
-          >
-            Edit
-          </Button>
+       
         </div>
       </Card.Body>
     </Card>
