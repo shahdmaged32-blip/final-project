@@ -14,58 +14,52 @@ export default function Login () {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
- 
-async function handleLogin(event) {
-  event.preventDefault()
+  async function handleLogin (event) {
+    event.preventDefault()
 
-  setError('')
+    setError('')
 
-  
-  const users = JSON.parse(
-    localStorage.getItem('registeredUsers') || '[]'
-  )
+    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]')
 
-  const registeredUser = users.find(
-    user =>
-      user.username === username &&
-      user.password === password
-  )
-
- 
-  if (registeredUser) {
-    localStorage.setItem('token', 'local-user-token')
-    localStorage.setItem(
-      'user',
-      JSON.stringify(registeredUser)
+    const registeredUser = users.find(
+      user => user.username === username && user.password === password
     )
 
-    navigate('/', { replace: true })
-    return
+    if (registeredUser) {
+      localStorage.setItem('token', 'local-user-token')
+
+      localStorage.setItem('user', JSON.stringify(registeredUser))
+
+      localStorage.setItem('loginType', 'registered')
+       window.dispatchEvent(new Event('authChanged'))
+      
+
+      navigate('/', { replace: true })
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      const response = await api.post('/auth/login', {
+        username,
+        password
+      })
+
+      const userData = response.data
+
+      localStorage.setItem('token', userData.accessToken)
+      localStorage.setItem('user', JSON.stringify(userData))
+      localStorage.setItem('loginType', 'dummyjson')
+      window.dispatchEvent(new Event('authChanged'))
+
+      navigate('/', { replace: true })
+    } catch (error) {
+      setError('Invalid username or password')
+    } finally {
+      setLoading(false)
+    }
   }
-
- 
-  try {
-    setLoading(true)
-
-    const response = await api.post('/auth/login', {
-      username,
-      password
-    })
-
-    const userData = response.data
-
-    localStorage.setItem('token', userData.accessToken)
-    localStorage.setItem('user', JSON.stringify(userData))
-
-    navigate('/', { replace: true })
-
-  } catch (error) {
-    setError('Invalid username or password')
-  } finally {
-    setLoading(false)
-  }
-}
-
 
   return (
     <div

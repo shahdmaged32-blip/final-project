@@ -1,4 +1,5 @@
-import { useParams, Link, useNavigate } from 'react-router-dom'
+
+import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Button, Card, Col, Row, Badge } from 'react-bootstrap'
 import { api } from '../Api/api'
@@ -6,37 +7,57 @@ import '../styles/productstyle.css'
 import { useDispatch } from 'react-redux'
 import { addItemToCart } from '../Store/Slices/cartSlice'
 
-export default function ProductDetails () {
+export default function ProductDetails() {
+
+  const token = localStorage.getItem('token')
+
   const { id } = useParams()
   const dispatch = useDispatch()
- const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const [product, setProduct] = useState({})
   const [selectedImage, setSelectedImage] = useState('')
 
-  useEffect(
-    function () {
-      async function fetchProduct () {
-        try {
-          const response = await api.get(`/products/${id}`)
-          setProduct(response.data)
-          setSelectedImage(response.data.thumbnail)
-        } catch (error) {
-          console.log(error)
-        }
-      }
+  function handleAddToCart() {
 
-      fetchProduct()
-    },
-    [id]
-  )
+    if (!token) {
+      navigate('/login')
+      return
+    }
+
+    dispatch(addItemToCart(product))
+    navigate('/cart')
+  }
+
+  useEffect(function() {
+
+    async function fetchProduct() {
+      try {
+        const response = await api.get(`/products/${id}`)
+
+        setProduct(response.data)
+        setSelectedImage(response.data.thumbnail)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchProduct()
+
+  }, [id])
 
   return (
     <div className='container mt-5'>
+
       <Row className='product-details-card shadow mt-5'>
+
         <Col md={6}>
+
           <div className='d-flex gap-3'>
+
             <div className='d-flex flex-column gap-3'>
+
               {product.images?.map((image, index) => (
                 <img
                   key={index}
@@ -53,9 +74,11 @@ export default function ProductDetails () {
                   }}
                 />
               ))}
+
             </div>
 
             <Card className='flex-grow-1 border-0 shadow-sm'>
+
               <Card.Img
                 src={selectedImage || product.thumbnail}
                 style={{
@@ -64,11 +87,15 @@ export default function ProductDetails () {
                   padding: '20px'
                 }}
               />
+
             </Card>
+
           </div>
+
         </Col>
 
         <Col md={6}>
+
           <Badge bg='success' className='mb-3'>
             New Arrival
           </Badge>
@@ -77,31 +104,33 @@ export default function ProductDetails () {
 
           <p>⭐ {product.rating}</p>
 
-          <h1 className='fw-bold text-dark'>${product.price}</h1>
+          <h1 className='fw-bold text-dark'>
+            ${product.price}
+          </h1>
 
-          <p className='text-muted'>Category: {product.category}</p>
+          <p className='text-muted'>
+            Category: {product.category}
+          </p>
 
           <hr />
 
           <p>{product.description}</p>
-          
 
           <div className='d-flex gap-2 mt-4'>
+
             <Button
               variant='primary'
               className='flex-grow-1'
-              onClick={() => {
-                dispatch(addItemToCart(product))
-                navigate('/cart')
-              }}
+              onClick={handleAddToCart}
             >
               <i className='bi bi-cart-plus me-2'></i>
               Add To Cart
             </Button>
 
-           
           </div>
+
           <Row className='mt-5'>
+
             <Col md={6} className='feature-item'>
               ✅ 2 Year Warranty
             </Col>
@@ -117,9 +146,13 @@ export default function ProductDetails () {
             <Col md={6} className='feature-item mt-3'>
               🎧 Lifetime Support
             </Col>
+
           </Row>
+
         </Col>
+
       </Row>
+
     </div>
   )
 }

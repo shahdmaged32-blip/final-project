@@ -1,25 +1,34 @@
-
 import { Container, Form, Nav, Navbar } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
-export default function NavBar({ search, setSearch }) {
-
+export default function NavBar ({ search, setSearch }) {
   const navigate = useNavigate()
 
-  const token = localStorage.getItem('token')
-  const user = JSON.parse(localStorage.getItem('user') || 'null')
+  const [token, setToken] = useState(localStorage.getItem('token'))
 
-  const isAdmin = user?.role === 'admin'
+  const [loginType, setLoginType] = useState(localStorage.getItem('loginType'))
 
-  function handleLogout() {
+  useEffect(function () {
+    function updateAuth () {
+      setToken(localStorage.getItem('token'))
+      setLoginType(localStorage.getItem('loginType'))
+    }
+
+    window.addEventListener('authChanged', updateAuth)
+
+    return () => {
+      window.removeEventListener('authChanged', updateAuth)
+    }
+  }, [])
+
+  function handleLogout () {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('loginType')
 
     navigate('/login', { replace: true })
   }
-
-  if (!token) return null
-
   return (
     <Navbar
       bg='white'
@@ -29,18 +38,14 @@ export default function NavBar({ search, setSearch }) {
       style={{ zIndex: 1030 }}
     >
       <Container>
-
-        <Navbar.Brand as={Link} to='/'
-          className='fw-bold text-primary'>
+        <Navbar.Brand as={Link} to='/' className='fw-bold text-primary'>
           ShopStream
         </Navbar.Brand>
 
         <Navbar.Toggle />
 
         <Navbar.Collapse>
-
           <Nav className='mx-auto align-items-lg-center'>
-
             <Nav.Link as={Link} to='/'>
               Home
             </Nav.Link>
@@ -49,7 +54,7 @@ export default function NavBar({ search, setSearch }) {
               Products
             </Nav.Link>
 
-            {!isAdmin && (
+            {token && (
               <>
                 <Nav.Link as={Link} to='/cart'>
                   Cart
@@ -61,13 +66,12 @@ export default function NavBar({ search, setSearch }) {
               </>
             )}
 
-            {isAdmin && (
+            {token && loginType === 'dummyjson' && (
               <Nav.Link as={Link} to='/dashboard'>
                 <i className='bi bi-speedometer2 me-1'></i>
                 Dashboard
               </Nav.Link>
             )}
-
           </Nav>
 
           <Form.Control
@@ -79,16 +83,16 @@ export default function NavBar({ search, setSearch }) {
             className='me-3'
           />
 
-          <button
-            className='btn btn-outline-danger'
-            onClick={handleLogout}
-          >
-            <i className='bi bi-box-arrow-right me-2'></i>
-            Logout
-          </button>
-
+          {token ? (
+            <button className='btn btn-outline-danger' onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <Link to='/login' className='btn btn-primary'>
+              Login
+            </Link>
+          )}
         </Navbar.Collapse>
-
       </Container>
     </Navbar>
   )

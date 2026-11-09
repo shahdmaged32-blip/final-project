@@ -5,13 +5,13 @@ import { Navigate, Outlet } from 'react-router-dom'
 export default function ProtectedRoute({ adminOnly = false }) {
 
   const token = localStorage.getItem('token')
-  const user = JSON.parse(localStorage.getItem('user') || 'null')
+  const loginType = localStorage.getItem('loginType')
 
   if (!token) {
     return <Navigate to="/login" replace />
   }
 
-  if (adminOnly && user?.role !== 'admin') {
+  if (adminOnly && loginType !== 'dummyjson') {
     return <Navigate to="/" replace />
   }
 
