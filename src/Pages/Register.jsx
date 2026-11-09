@@ -18,7 +18,7 @@ export default function Register() {
 
   const [showPassword, setShowPassword] = useState(false)
 
-  function handleChange(e) {
+  function handleChange(event) {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value
